@@ -1,0 +1,10 @@
+//Login
+
+export const LOGIN_FETCH = 'LOGIN_FETCH'
+export const LOGIN_FETCH_SUCCES = 'LOGIN_FETCH_SUCCES'
+export const LOGIN_FETCH_ERR = 'LOGIN_FETCH_ERR'
+
+
+//Maps
+
+export const MAPS_UPDATE_LOCATION  = 'MAPS_UPDATE_LOCATION'
