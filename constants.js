@@ -9,4 +9,4 @@ export function getHeaders(){
 }
 export const TITLE_COLOR = '#fefefe'
 export const HEADER_COLOR = '#515c6d'
-export const BACKGROUND_COLOR = '#62727b'
+export const BACKGROUND_COLOR = '#263238'

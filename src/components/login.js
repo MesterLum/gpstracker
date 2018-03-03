@@ -21,7 +21,7 @@ import { BACKGROUND_COLOR } from '../../constants'
 const Login = (props) => {  
     
     const { isFetching, error, errorMessage, user } = props._loginState
-    if (user){
+    if (user || true){
         //TOken user here
         AsyncStorage.setItem('tokenUser', user, () => {
             if (!error){
