@@ -18,10 +18,13 @@ class Home extends Component{
 
     constructor(props){
         super(props)
+        var propsMap = null
         
     }
 
     componentDidMount() {
+        //Get Hour For MapStyle
+        this.propsMap = this.getHourForMapStyle()
         this.props.mapUpdate(navigator.geolocation)
     }
 
@@ -31,32 +34,33 @@ class Home extends Component{
         }
     }
 
+    /*
+        This method
+    */
     getHourForMapStyle(){
         const Hour = new Date().getHours()
-        if (Hour > 18)
-            return{
+        return Hour > 18 && Hour < 6?
+            {
                 provider : PROVIDER_GOOGLE,
                 customMapStyle : require('../utils/mapStyle').NIGTH
             }
-        return{
-            provider : PROVIDER_GOOGLE,
-            customMapStyle : require('../utils/mapStyle').DAY
-        }
+            :
+            {
+                provider : PROVIDER_GOOGLE,
+                customMapStyle : require('../utils/mapStyle').DAY
+            }
     }
 
 
     render() {
         
-        //Get Hour For MapStyle
-        const propsMap = this.getHourForMapStyle()
-
         const { coors } = this.props.mapCors
         return (
             <MapView
                 style={styles.containerMap}
                 showsUserLocation={true}
-                {...propsMap}
                 region={coors}
+                {...this.propsMap}
                 
              >
              </MapView>
