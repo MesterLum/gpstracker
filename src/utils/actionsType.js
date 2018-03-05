@@ -8,3 +8,7 @@ export const LOGIN_FETCH_ERR = 'LOGIN_FETCH_ERR'
 //Maps
 
 export const MAPS_UPDATE_LOCATION  = 'MAPS_UPDATE_LOCATION'
+
+//Menu
+
+export const CHANGE_STATE_MENU = 'CHANGE_STATE_MENU'
