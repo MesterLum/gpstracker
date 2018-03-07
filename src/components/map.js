@@ -15,8 +15,6 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import { dispatchGetLocation } from '../actions/maps'
 import { dayOrNigth, getGeolocationAnimated } from '../utils/utils'
 
-
-
 class Map extends Component{
 
     constructor(props){
@@ -60,8 +58,9 @@ class Map extends Component{
         return (
             <MapView
                 style={styles.containerMap}
-                showsUserLocation
-                followsUserLocation
+                showsUserLocation={true}
+                
+                followsUserLocation={true}
                 region={coors}
                 ref={ref => { this.mapView = ref }}
                 {...this.propsMap}

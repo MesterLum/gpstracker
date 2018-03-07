@@ -3,7 +3,7 @@
 */
 export const dayOrNigth = () =>{
     let Hour = new Date().getHours()
-    return Hour > 18 && !(Hour < 7)?
+    return Hour > 18 || Hour < 7?
     0 : 1
 }
 

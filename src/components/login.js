@@ -17,22 +17,39 @@ import {
 import LoginForm from '.././components/forms/loginForm'
 
 import { BACKGROUND_COLOR } from '../../constants'
-
+var buttonLogin = undefined
 const Login = (props) => {  
     
     const { isFetching, error, errorMessage, user } = props._loginState
-    if (user || true){
+    
+    if (user){
         //TOken user here
         AsyncStorage.setItem('tokenUser', user, () => {
             if (!error){
-                let navigate = NavigationActions.navigate({
-                    routeName: 'Home',
-                })
-                props.navigation.dispatch(navigate)
+                buttonLogin.success()
+                const interval = setInterval(()=>{
+                    let navigate = NavigationActions.navigate({
+                        routeName: 'Home',
+                    })
+                    props.navigation.dispatch(navigate)
+                    clearInterval(interval)
+                },2000)
+
             }
         })
+    }
+    if (error){
+        buttonLogin.error()
+        const interval = setInterval(()=>{
+            buttonLogin.reset()
+            clearInterval(interval)
+        },2000)
+        
+    }
 
-
+    const onClickButton = (user,password, btn) => {
+        buttonLogin = btn
+        props.fetchLogin(user,password)
     }
 
     return (
@@ -40,14 +57,13 @@ const Login = (props) => {
          style={styles.container}
          >
             <View style={styles.logo}>
-                <Image source={require('../../assets/img/logo.png')} />
+                
                 <Text style={{color: 'white', marginLeft: 15, marginRight: 15}}>GPS Tracker, seguimiento en tiempo real de camiones por un precio increible</Text>
             </View>
             <View style={styles.formLogin}>
                 {error && <Text style={{color: 'red', fontSize: 20, textAlign: 'center', marginBottom: 5}}>{errorMessage}</Text>}
                 <View>
-                    {!isFetching && <LoginForm onCLickForLogin={props.fetchLogin}/>}
-                    {isFetching && <Text>Cargando</Text>}
+                    <LoginForm onClickButton={onClickButton} />
                 </View>
             </View>
         </KeyboardAvoidingView>

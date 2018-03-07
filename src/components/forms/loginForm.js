@@ -4,9 +4,9 @@ import {
     TextInput,
     TouchableHighlight,
     Text,
-    StyleSheet,
-    Abov
+    StyleSheet
 } from 'react-native'
+import Btn from 'react-native-micro-animated-button'
 
 import { Field, reduxForm  } from 'redux-form'
 import PropTypes from 'prop-types'
@@ -14,18 +14,17 @@ import PropTypes from 'prop-types'
 
 const inputUser = ({input, ...inputProps, meta : {touched, error}}) => {
     
-    const existsErr = touched && error !== 'undefined'
 
     return (
         <View>
-            {existsErr && <Text style={{textAlign : 'center', color: 'red'}}>{error}</Text>}
+            
             <TextInput
                 style={styles.input}
                 {...inputProps}
                 {...input}
                 value={input.value}
                 onChangeText={input.onChangeText}
-                placeholder='Usuario'
+                placeholder='User'
             />
         
         </View>)
@@ -33,10 +32,8 @@ const inputUser = ({input, ...inputProps, meta : {touched, error}}) => {
 
 const inputPassword = ({input, ...inputProps, meta : {touched, error}}) => {
 
-    const existsErr = touched && error !== 'undefined'
     return (
         <View>
-        {existsErr && <Text style={{textAlign : 'center', color: 'red'}}>{error}</Text>}
         <TextInput
             style={styles.input}
             {...inputProps}
@@ -44,20 +41,19 @@ const inputPassword = ({input, ...inputProps, meta : {touched, error}}) => {
             value={input.value}
             onChangeText={input.onChangeText}
             secureTextEntry={true}
-            placeholder='Usuario'
+            placeholder='Password'
+            labelStyle={{backgroundColor: 'red'}}
         />
     
         </View>
     )
 }
 
-
-
-
-const LoginForm = ({handleSubmit, onCLickForLogin}) => {
+const btnLogin = null
+const LoginForm = ({handleSubmit, onClickButton, loginState}) => {
 
     const submit = ({user, password}) =>{
-        onCLickForLogin(user, password)
+        onClickButton(user, password, btnLogin)
         
     }
     
@@ -65,9 +61,16 @@ const LoginForm = ({handleSubmit, onCLickForLogin}) => {
         <View>
             <Field name='user' component={inputUser}/>
             <Field name='password' component={inputPassword}/>
-            <TouchableHighlight style={styles.button} onPress={handleSubmit(submit)}>
-                <Text style={{textAlign : 'center', color: 'white', fontSize : 17}}>Login</Text>
-            </TouchableHighlight>
+            <View style={{alignItems: 'center'}}>
+            <Btn
+                label="Ingresar"
+                onPress={handleSubmit(submit)}
+                ref={ref => (btnLogin = ref)}
+                foregroundColor={'#ffffff'}
+                backgroundColor={'#515c6d'}
+                successIcon="check"
+            />
+            </View>
         </View>
     ) 
 }
@@ -98,7 +101,7 @@ const styles = StyleSheet.create({
     },
 })
 
-const validate = values => {
+/*const validate = values => {
 
     const errors = {}
     const { user, password } = values
@@ -113,9 +116,8 @@ const validate = values => {
     
         
     return errors
-}
+}*/
 
 export default reduxForm({
-    form: 'login',
-    validate
+    form: 'login'
 })(LoginForm)

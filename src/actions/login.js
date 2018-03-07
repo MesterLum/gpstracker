@@ -21,14 +21,26 @@ function actionLoginErr(errorMessage) {
 }
 
 export function dispatchLogin(user, password){
-
     return (dispatch) => {
+        var errorM;
+        errorM = !user ? 'El usuario es requerido'
+        : user.length<6 || user.length>30 ? 'Min car. 6 max 30'
+        : undefined
+        
+        errorM? dispatch(actionLoginErr(errorM)):
+        errorM = !password ? 'la contraseña es requerida'
+        : password.length<3 ? 'Min 3 caracteres'
+        : undefined
+        if (errorM){
+            dispatch(actionLoginErr(errorM))
+            return;
+        }
+
         dispatch(actionLogin())
         fetch(`${URL_API}/api/users/login`, {method : 'POST', headers : getHeaders(),
-        body : JSON.stringify({user: 'mesterlum',password: 'palafox88'})})
+        body : JSON.stringify({email: user,password})})
         
         .then(res => {
-            
             if (res.status == 400)
                 res.json().then(res => dispatch(actionLoginErr(res.message)))
             else if(res.status == 500)
