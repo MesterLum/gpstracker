@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { NavigationActions } from 'react-navigation'
 
@@ -12,63 +12,96 @@ import {
     StyleSheet,
     TouchableHighlight,
     KeyboardAvoidingView,
-    AsyncStorage
+    AsyncStorage,
+    Keyboard,
+    Animated
 } from 'react-native';
 import LoginForm from '.././components/forms/loginForm'
 
 import { BACKGROUND_COLOR } from '../../constants'
-var buttonLogin = undefined
-const Login = (props) => {  
+
+
+class Login extends Component{
+    constructor(props){
+        super(props)
+        var buttonLogin = undefined
+
+        this.imageHeight = new Animated.Value(250)
+    }
+
+    componentWillMount () {
+        this.keyboardWillShowSub = Keyboard.addListener('keyboardWillShow', this.keyboardWillShow)
+        this.keyboardWillHideSub = Keyboard.addListener('keyboardWillHide', this.keyboardWillHide)
+      }
+
+    keyboardWillShow = (event) => {
+        Animated.timing(this.imageHeight, {
+          duration: event.duration,
+          toValue: 50,
+        }).start();
+      };
     
-    const { isFetching, error, errorMessage, user } = props._loginState
+      keyboardWillHide = (event) => {
+        Animated.timing(this.imageHeight, {
+          duration: event.duration,
+          toValue: 250,
+        }).start();
+      };
+
+
+    render(){
+        const { isFetching, error, errorMessage, user } = this.props._loginState
+        if (user){
+            //TOken user here
+            AsyncStorage.setItem('tokenUser', user, () => {
+                if (!error){
+                    this.buttonLogin.success()
+                    const interval = setInterval(()=>{
+                        let navigate = NavigationActions.navigate({
+                            routeName: 'Home',
+                        })
+                        this.props.navigation.dispatch(navigate)
+                        clearInterval(interval)
+                    },2000)
     
-    if (user){
-        //TOken user here
-        AsyncStorage.setItem('tokenUser', user, () => {
-            if (!error){
-                buttonLogin.success()
-                const interval = setInterval(()=>{
-                    let navigate = NavigationActions.navigate({
-                        routeName: 'Home',
-                    })
-                    props.navigation.dispatch(navigate)
-                    clearInterval(interval)
-                },2000)
-
-            }
-        })
-    }
-    if (error){
-        buttonLogin.error()
-        const interval = setInterval(()=>{
-            buttonLogin.reset()
-            clearInterval(interval)
-        },2000)
-        
-    }
-
-    const onClickButton = (user,password, btn) => {
-        buttonLogin = btn
-        props.fetchLogin(user,password)
-    }
-
-    return (
-        <KeyboardAvoidingView behavior="padding"
-         style={styles.container}
-         >
-            <View style={styles.logo}>
-                
-                <Text style={{color: 'white', marginLeft: 15, marginRight: 15}}>GPS Tracker, seguimiento en tiempo real de camiones por un precio increible</Text>
-            </View>
-            <View style={styles.formLogin}>
-                {error && <Text style={{color: 'red', fontSize: 20, textAlign: 'center', marginBottom: 5}}>{errorMessage}</Text>}
-                <View>
-                    <LoginForm onClickButton={onClickButton} />
+                }
+            })
+        }
+        if (error){
+            this.buttonLogin.error()
+            const interval = setInterval(()=>{
+                this.buttonLogin.reset()
+                clearInterval(interval)
+            },2000)
+            
+        }
+    
+        const onClickButton = (user,password, btn) => {
+            this.buttonLogin = btn
+            this.props.fetchLogin("mesterlum@hotmail.com","palafox88")
+        }
+    
+        return (
+            <KeyboardAvoidingView behavior="padding"
+             style={styles.container}
+             >
+                <View style={styles.logo}>
+                    <Animated.Image source={require('../../assets/img/logo.png')} 
+                    style={[{height: 250, width: 250},{ height: this.imageHeight }]}/>
+                    <Text style={{color: 'white', marginLeft: 15, marginRight: 15}}>GPS Tracker, seguimiento en tiempo real de camiones por un precio increible</Text>
                 </View>
-            </View>
-        </KeyboardAvoidingView>
-    )
+                <View style={styles.formLogin}>
+                    {error && <Text style={{color: 'red', fontSize: 20, textAlign: 'center', marginBottom: 5}}>{errorMessage}</Text>}
+                    <View>
+                        <LoginForm onClickButton={onClickButton} />
+                    </View>
+                </View>
+            </KeyboardAvoidingView>
+        )
+    }
 }
+
+
     
 
 

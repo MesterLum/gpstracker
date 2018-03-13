@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
         flex : 1,
     },
     styleMenu : {
-        marginTop: Platform.OS === 'ios'? 30 : 5,
+        marginTop: 25,
         flexDirection: 'row',
         justifyContent: 'space-between',
         marginHorizontal: 7
