@@ -1,4 +1,4 @@
-export const URL_API = 'http://212.237.63.189:3000'
+export const URL_API = 'https://mesterlum.com'
 
 
 export function getHeaders(){
