@@ -5,11 +5,13 @@ import login from './login';
 import nav from './nav';
 import map from './map'
 import menuHome from './menuHome'
+import layoutHome from './layoutHome'
 
 export default combineReducers({
     login,
     nav,
     form : formReducer,
     map,
-    menuHome
+    menuHome,
+    layoutHome
 })

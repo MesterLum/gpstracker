@@ -13,7 +13,8 @@ import { connect } from 'react-redux'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { dispatchGetLocation } from '../actions/maps'
-import { dayOrNigth, getGeolocationAnimated } from '../utils/utils'
+import { dayOrNigth } from '../utils/utils'
+import MenuInMap from './map/menuInMap'
 
 class Map extends Component{
 
@@ -55,33 +56,22 @@ class Map extends Component{
     render() {
         
         const { coors } = this.props.mapCors
+        console.log(this.props)
         return (
             <MapView
                 style={styles.containerMap}
                 showsUserLocation={true}
-                
                 followsUserLocation={true}
                 region={coors}
                 ref={ref => { this.mapView = ref }}
                 {...this.propsMap}
                 
              >
-             <View style={styles.styleMenu}>
-                <Icon
-                    name="bars"
-                    onPress={this.props.onPressMenuIcon}
-                    color={dayOrNigth() == 1? 'black' : 'white'}
-                    size={35}
-                />
-                <Icon
-                    name="location-arrow"
-                    onPress={() => getGeolocationAnimated(navigator.geolocation,(coors =>{
-                        this.mapView.animateToRegion(coors, 3000)
-                    }))}
-                    color={dayOrNigth() == 1? 'black' : 'white'}
-                    size={35}
-                />
-             </View>
+             <MenuInMap
+              getGeolocationAnimated={this.props.getGeolocationAnimated}
+              onPressMenuIcon={this.props.onPressMenuIcon}
+              mapView={this.mapView}
+              />
              </MapView>
              
         )
@@ -91,12 +81,6 @@ class Map extends Component{
 const styles = StyleSheet.create({
     containerMap : {
         flex : 1,
-    },
-    styleMenu : {
-        marginTop: 25,
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        marginHorizontal: 7
     }
 })
 

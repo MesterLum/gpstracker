@@ -1,7 +1,8 @@
-import { CHANGE_STATE_MENU } from '../utils/actionsType'
+import { CHANGE_STATE_MENU, PICK_ROUTS_VIEW } from '../utils/actionsType'
 
 const initialState = {
-    isOpen : false
+    isOpen : false,
+    routsView : false
 }
 
 export default (state = initialState, action) =>{
@@ -10,7 +11,12 @@ export default (state = initialState, action) =>{
             return{
                 ...state,
                 isOpen : !state.isOpen
-
+            }
+        }
+        case PICK_ROUTS_VIEW: {
+            return {
+                ...state,
+                routsView : action.bool
             }
         }
         default:

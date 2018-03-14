@@ -46,12 +46,12 @@ const elementsMenu = [
     {
         icon: 'user',
         text: 'Cuenta',
-        key: 'Me'
+        key: 'Personal'
     },
     {
         icon: 'bus',
         text: 'Rutas',
-        key: 'Me2'
+        key: 'Routs'
     },
     {
         icon: 'sign-out',

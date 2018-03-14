@@ -57,10 +57,7 @@ class Login extends Component{
                 if (!error){
                     this.buttonLogin.success()
                     const interval = setInterval(()=>{
-                        let navigate = NavigationActions.navigate({
-                            routeName: 'Home',
-                        })
-                        this.props.navigation.dispatch(navigate)
+                        this.props.changeLayout('home')
                         clearInterval(interval)
                     },2000)
     
